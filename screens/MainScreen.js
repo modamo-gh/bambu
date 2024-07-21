@@ -1,24 +1,43 @@
 import React, { useState } from "react";
-import { StyleSheet, TextInput, TouchableOpacity, View } from "react-native";
+import {
+	FlatList,
+	StyleSheet,
+	Text,
+	TextInput,
+	TouchableOpacity,
+	View
+} from "react-native";
 
 const MainScreen = () => {
 	const [title, setTitle] = useState("");
 	const [books, setBooks] = useState([]);
 
 	return (
-		<View style={styles.inputAndButtonContainerStyle}>
-			<TextInput
-				autoCapitalize="words"
-				onChangeText={(newTitle) => setTitle(newTitle)}
-				style={styles.textInputStyle}
-				value={title}
-			/>
-			<TouchableOpacity
-				onPress={() => {
-					setBooks([...books, { title: title }]);
+		<View style={styles.screenContainerStyle}>
+			<View style={styles.inputAndButtonContainerStyle}>
+				<TextInput
+					autoCapitalize="words"
+					onChangeText={(newTitle) => setTitle(newTitle)}
+					style={styles.textInputStyle}
+					value={title}
+				/>
+				<TouchableOpacity
+					onPress={() => {
+						setBooks([...books, { title: title }]);
+					}}
+					style={styles.addBooksButtonStyle}
+				></TouchableOpacity>
+			</View>
+			<FlatList
+				data={books}
+				renderItem={({ item }) => {
+					return (
+						<View style={styles.books}>
+							<Text>{item.title}</Text>
+						</View>
+					);
 				}}
-				style={styles.addBooksButtonStyle}
-			></TouchableOpacity>
+			/>
 		</View>
 	);
 };
@@ -32,11 +51,18 @@ const styles = StyleSheet.create({
 		justifyContent: "center",
 		width: 48
 	},
+	books: {
+		backgroundColor: "rgb(234, 219, 203)",
+		borderRadius: 5,
+		fontSize: 18,
+		margin: 8,
+		padding: 16
+	},
 	inputAndButtonContainerStyle: {
 		flexDirection: "row",
-		justifyContent: "space-around",
 		padding: 8
 	},
+	screenContainerStyle: { flex: 1 },
 	textInputStyle: {
 		borderBlockColor: "black",
 		borderRadius: 5,
