@@ -25,6 +25,7 @@ const MainScreen = () => {
 				<TouchableOpacity
 					onPress={() => {
 						setBooks([...books, { title: title }]);
+                        setTitle("");
 					}}
 					style={styles.addBooksButtonStyle}
 				></TouchableOpacity>
