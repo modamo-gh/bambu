@@ -19,6 +19,7 @@ const MainScreen = () => {
 					autoCapitalize="words"
 					onChangeText={(newTitle) => setTitle(newTitle)}
 					placeholder="Enter Book Title"
+                    placeholderTextColor="#DDA15E"
 					style={styles.textInputStyle}
 					value={title}
 				/>
@@ -37,7 +38,7 @@ const MainScreen = () => {
 				renderItem={({ item }) => {
 					return (
 						<View style={styles.books}>
-							<Text>{item.title}</Text>
+							<Text style={styles.bookText}>{item.title}</Text>
 						</View>
 					);
 				}}
@@ -49,31 +50,35 @@ const MainScreen = () => {
 const styles = StyleSheet.create({
 	addBooksButtonStyle: {
 		alignItems: "center",
-		backgroundColor: "green",
+		backgroundColor: "#606C38",
 		borderRadius: 50,
 		height: 48,
 		justifyContent: "center",
 		width: 48
 	},
 	books: {
-		backgroundColor: "rgb(234, 219, 203)",
+		backgroundColor: "#DDA15E",
 		borderRadius: 5,
 		fontSize: 18,
 		margin: 8,
 		padding: 16
 	},
+	bookText: { color: "#283618" },
 	inputAndButtonContainerStyle: {
 		flexDirection: "row",
 		padding: 8
 	},
 	plusStyle: {
-		color: "white"
+		color: "#FEFAE0",
+		fontSize: 24,
+		textAlign: "center"
 	},
-	screenContainerStyle: { flex: 1 },
+	screenContainerStyle: { flex: 1, backgroundColor: "#FEFAE0" },
 	textInputStyle: {
-		borderBlockColor: "black",
+		borderColor: "#606C38",
 		borderRadius: 5,
 		borderWidth: 2,
+		color: "#283618",
 		flex: 1,
 		fontSize: 18,
 		height: 48,
