@@ -18,6 +18,7 @@ const MainScreen = () => {
 				<TextInput
 					autoCapitalize="words"
 					onChangeText={(newTitle) => setTitle(newTitle)}
+					placeholder="Enter Book Title"
 					style={styles.textInputStyle}
 					value={title}
 				/>
