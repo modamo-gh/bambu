@@ -25,7 +25,9 @@ const MainScreen = () => {
 				/>
 				<TouchableOpacity
 					onPress={() => {
-						setBooks([...books, { title: title }]);
+                        const date = new Date();
+
+						setBooks([...books, { title: title, dateAdded: date.getTime() }]);
 						setTitle("");
 					}}
 					style={styles.addBooksButtonStyle}
