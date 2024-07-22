@@ -19,22 +19,30 @@ const MainScreen = () => {
 					autoCapitalize="words"
 					onChangeText={(newTitle) => setTitle(newTitle)}
 					placeholder="Enter Book Title"
-                    placeholderTextColor="#DDA15E"
+					placeholderTextColor="#DDA15E"
 					style={styles.textInputStyle}
 					value={title}
 				/>
 				<TouchableOpacity
 					onPress={() => {
-                        const date = new Date();
+						const date = new Date();
 
-						setBooks([...books, { title: title, dateAdded: date.getTime() }]);
+						setBooks([
+							...books,
+							{ title: title, dateAdded: date.getTime() }
+						]);
 						setTitle("");
 					}}
 					style={styles.addBooksButtonStyle}
 				>
-					<Text style={styles.plusStyle}>+</Text>
+					<Text style={styles.buttonTextStyle}>+</Text>
 				</TouchableOpacity>
 			</View>
+			{books.length ? (
+				<TouchableOpacity style={styles.sortButtonStyle}>
+					<Text style={styles.buttonTextStyle}>Sort</Text>
+				</TouchableOpacity>
+			) : null}
 			<FlatList
 				data={books}
 				renderItem={({ item }) => {
@@ -63,19 +71,29 @@ const styles = StyleSheet.create({
 		borderRadius: 5,
 		fontSize: 18,
 		margin: 8,
-		padding: 16
+		height: 48,
+        justifyContent: "center"
 	},
-	bookText: { color: "#283618" },
-	inputAndButtonContainerStyle: {
-		flexDirection: "row",
-		padding: 8
-	},
-	plusStyle: {
+	bookText: { color: "#283618", padding: 8 },
+	buttonTextStyle: {
 		color: "#FEFAE0",
 		fontSize: 24,
 		textAlign: "center"
 	},
+	inputAndButtonContainerStyle: {
+		flexDirection: "row",
+		padding: 8
+	},
 	screenContainerStyle: { flex: 1, backgroundColor: "#FEFAE0" },
+	sortButtonStyle: {
+		backgroundColor: "#606C38",
+		height: 48,
+		width: 60,
+		justifyContent: "center",
+		borderRadius: 5,
+		alignSelf: "flex-end",
+		marginHorizontal: 8
+	},
 	textInputStyle: {
 		borderColor: "#606C38",
 		borderRadius: 5,
