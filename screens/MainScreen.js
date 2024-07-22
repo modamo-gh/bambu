@@ -25,10 +25,12 @@ const MainScreen = () => {
 				<TouchableOpacity
 					onPress={() => {
 						setBooks([...books, { title: title }]);
-                        setTitle("");
+						setTitle("");
 					}}
 					style={styles.addBooksButtonStyle}
-				></TouchableOpacity>
+				>
+					<Text style={styles.plusStyle}>+</Text>
+				</TouchableOpacity>
 			</View>
 			<FlatList
 				data={books}
@@ -63,6 +65,9 @@ const styles = StyleSheet.create({
 	inputAndButtonContainerStyle: {
 		flexDirection: "row",
 		padding: 8
+	},
+	plusStyle: {
+		color: "white"
 	},
 	screenContainerStyle: { flex: 1 },
 	textInputStyle: {
