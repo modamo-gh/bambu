@@ -1,11 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {
-	FlatList,
-	StyleSheet,
-	Text,
-	TextInput,
-	View
-} from "react-native";
+import { FlatList, StyleSheet, Text, TextInput, View } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useActionSheet } from "@expo/react-native-action-sheet";
 import ActionButton from "../components/ActionButton";
@@ -42,6 +36,19 @@ const MainScreen = () => {
 			setTitle("");
 		} catch (error) {
 			console.error("Something went wrong saving the book:", error);
+		}
+	};
+
+	const deleteBook = async (bookToDelete) => {
+		const updatedBooks = [
+			...books.filter((book) => book.title !== bookToDelete.title)
+		];
+
+		try {
+			await AsyncStorage.setItem("books", JSON.stringify(updatedBooks));
+			setBooks(updatedBooks);
+		} catch (error) {
+			console.error("Something went wrong deleting the book:", error);
 		}
 	};
 
@@ -117,9 +124,7 @@ const MainScreen = () => {
 							<Text style={styles.bookText}>{item.title}</Text>
 							<ActionButton
 								buttonStyle={styles.deleteBooksButtonStyle}
-								onPress={() => {
-									console.log("deleted");
-								}}
+								onPress={() => deleteBook(item)}
 								text="X"
 							/>
 						</View>
@@ -147,7 +152,7 @@ const styles = StyleSheet.create({
 		fontSize: 18,
 		height: 48,
 		justifyContent: "space-between",
-		margin: 8,
+		margin: 8
 	},
 	bookText: { color: "#283618", padding: 8 },
 	deleteBooksButtonStyle: {
