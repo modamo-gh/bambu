@@ -4,11 +4,11 @@ import {
 	StyleSheet,
 	Text,
 	TextInput,
-	TouchableOpacity,
 	View
 } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useActionSheet } from "@expo/react-native-action-sheet";
+import ActionButton from "../components/ActionButton";
 
 const MainScreen = () => {
 	const [title, setTitle] = useState("");
@@ -52,19 +52,35 @@ const MainScreen = () => {
 		showActionSheetWithOptions({ options, cancelButtonIndex }, (index) => {
 			switch (index) {
 				case 0:
-					setBooks([...books.sort((a,b) => a.title.toLowerCase().localeCompare(b.title.toLowerCase()))]);
-                    break;
-				case 1:
-					setBooks([...books.sort((a,b) => b.title.toLowerCase().localeCompare(a.title.toLowerCase()))]);
-                    break;
-				case 2:
-					setBooks([...books.sort((a,b) => b.dateAdded - a.dateAdded)]);
-                    break;
-				case 3:
-                    setBooks([...books.sort((a,b) => a.dateAdded - b.dateAdded)]);
+					setBooks([
+						...books.sort((a, b) =>
+							a.title
+								.toLowerCase()
+								.localeCompare(b.title.toLowerCase())
+						)
+					]);
 					break;
-                case cancelButtonIndex:
-                    break;
+				case 1:
+					setBooks([
+						...books.sort((a, b) =>
+							b.title
+								.toLowerCase()
+								.localeCompare(a.title.toLowerCase())
+						)
+					]);
+					break;
+				case 2:
+					setBooks([
+						...books.sort((a, b) => b.dateAdded - a.dateAdded)
+					]);
+					break;
+				case 3:
+					setBooks([
+						...books.sort((a, b) => a.dateAdded - b.dateAdded)
+					]);
+					break;
+				case cancelButtonIndex:
+					break;
 			}
 		});
 	};
@@ -80,17 +96,18 @@ const MainScreen = () => {
 					style={styles.textInputStyle}
 					value={title}
 				/>
-				<TouchableOpacity
+				<ActionButton
+					buttonStyle={styles.addBooksButtonStyle}
 					onPress={addBook}
-					style={styles.addBooksButtonStyle}
-				>
-					<Text style={styles.buttonTextStyle}>+</Text>
-				</TouchableOpacity>
+					text="+"
+				/>
 			</View>
 			{books.length ? (
-				<TouchableOpacity style={styles.sortButtonStyle} onPress={onSortPress}>
-					<Text style={styles.buttonTextStyle}>Sort</Text>
-				</TouchableOpacity>
+				<ActionButton
+					buttonStyle={styles.sortButtonStyle}
+					onPress={onSortPress}
+					text="Sort"
+				/>
 			) : null}
 			<FlatList
 				data={books}
@@ -98,6 +115,13 @@ const MainScreen = () => {
 					return (
 						<View style={styles.books}>
 							<Text style={styles.bookText}>{item.title}</Text>
+							<ActionButton
+								buttonStyle={styles.deleteBooksButtonStyle}
+								onPress={() => {
+									console.log("deleted");
+								}}
+								text="X"
+							/>
 						</View>
 					);
 				}}
@@ -116,18 +140,23 @@ const styles = StyleSheet.create({
 		width: 48
 	},
 	books: {
+		alignItems: "center",
 		backgroundColor: "#DDA15E",
 		borderRadius: 5,
+		flexDirection: "row",
 		fontSize: 18,
-		margin: 8,
 		height: 48,
-		justifyContent: "center"
+		justifyContent: "space-between",
+		margin: 8,
 	},
 	bookText: { color: "#283618", padding: 8 },
-	buttonTextStyle: {
-		color: "#FEFAE0",
-		fontSize: 24,
-		textAlign: "center"
+	deleteBooksButtonStyle: {
+		alignItems: "center",
+		backgroundColor: "#BC4749",
+		borderRadius: 5,
+		height: 48,
+		justifyContent: "center",
+		width: 48
 	},
 	inputAndButtonContainerStyle: {
 		flexDirection: "row",

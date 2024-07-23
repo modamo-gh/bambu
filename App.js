@@ -13,7 +13,12 @@ const App = () => {
 					<Stack.Screen
 						name="Main"
 						component={MainScreen}
-						options={{ title: "bamboo", headerStyle: {backgroundColor: "#FEFAE0"}, headerTintColor: "#283618", headerTitleStyle: {fontWeight: "bold"}}}
+						options={{
+							headerStyle: { backgroundColor: "#FEFAE0" },
+							headerTintColor: "#283618",
+							headerTitleStyle: { fontWeight: "bold" },
+							title: "bamboo"
+						}}
 					/>
 				</Stack.Navigator>
 			</NavigationContainer>
