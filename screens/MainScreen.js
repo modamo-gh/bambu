@@ -8,10 +8,13 @@ import {
 	View
 } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useActionSheet } from "@expo/react-native-action-sheet";
 
 const MainScreen = () => {
 	const [title, setTitle] = useState("");
 	const [books, setBooks] = useState([]);
+
+	const { showActionSheetWithOptions } = useActionSheet();
 
 	const getBooks = async () => {
 		try {
@@ -42,6 +45,30 @@ const MainScreen = () => {
 		}
 	};
 
+	const onSortPress = () => {
+		const options = ["A - Z", "Z - A", "Newest", "Oldest", "Cancel"];
+		const cancelButtonIndex = 4;
+
+		showActionSheetWithOptions({ options, cancelButtonIndex }, (index) => {
+			switch (index) {
+				case 0:
+					setBooks([...books.sort((a,b) => a.title.localeCompare(b.title))]);
+                    break;
+				case 1:
+					setBooks([...books.sort((a,b) => b.title.localeCompare(a.title))]);
+                    break;
+				case 2:
+					setBooks([...books.sort((a,b) => b.dateAdded - a.dateAdded)]);
+                    break;
+				case 3:
+                    setBooks([...books.sort((a,b) => a.dateAdded - b.dateAdded)]);
+					break;
+                case cancelButtonIndex:
+                    break;
+			}
+		});
+	};
+
 	return (
 		<View style={styles.screenContainerStyle}>
 			<View style={styles.inputAndButtonContainerStyle}>
@@ -61,7 +88,7 @@ const MainScreen = () => {
 				</TouchableOpacity>
 			</View>
 			{books.length ? (
-				<TouchableOpacity style={styles.sortButtonStyle}>
+				<TouchableOpacity style={styles.sortButtonStyle} onPress={onSortPress}>
 					<Text style={styles.buttonTextStyle}>Sort</Text>
 				</TouchableOpacity>
 			) : null}
