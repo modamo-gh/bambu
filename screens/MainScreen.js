@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
 	FlatList,
 	StyleSheet,
@@ -7,10 +7,40 @@ import {
 	TouchableOpacity,
 	View
 } from "react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const MainScreen = () => {
 	const [title, setTitle] = useState("");
 	const [books, setBooks] = useState([]);
+
+	const getBooks = async () => {
+		try {
+			const savedBooks = await AsyncStorage.getItem("books");
+			if (savedBooks) {
+				setBooks(JSON.parse(savedBooks));
+			}
+		} catch (error) {
+			console.error("Something went wrong retrieving books:", error);
+		}
+	};
+
+	useEffect(() => {
+		getBooks();
+	}, []);
+
+	const addBook = async () => {
+		const date = new Date();
+		const newBook = { title: title, dateAdded: date.getTime() };
+		const updatedBooks = [...books, newBook];
+
+		try {
+			await AsyncStorage.setItem("books", JSON.stringify(updatedBooks));
+			setBooks(updatedBooks);
+			setTitle("");
+		} catch (error) {
+			console.error("Something went wrong saving the book:", error);
+		}
+	};
 
 	return (
 		<View style={styles.screenContainerStyle}>
@@ -24,15 +54,7 @@ const MainScreen = () => {
 					value={title}
 				/>
 				<TouchableOpacity
-					onPress={() => {
-						const date = new Date();
-
-						setBooks([
-							...books,
-							{ title: title, dateAdded: date.getTime() }
-						]);
-						setTitle("");
-					}}
+					onPress={addBook}
 					style={styles.addBooksButtonStyle}
 				>
 					<Text style={styles.buttonTextStyle}>+</Text>
@@ -72,7 +94,7 @@ const styles = StyleSheet.create({
 		fontSize: 18,
 		margin: 8,
 		height: 48,
-        justifyContent: "center"
+		justifyContent: "center"
 	},
 	bookText: { color: "#283618", padding: 8 },
 	buttonTextStyle: {
