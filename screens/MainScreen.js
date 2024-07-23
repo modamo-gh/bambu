@@ -52,10 +52,10 @@ const MainScreen = () => {
 		showActionSheetWithOptions({ options, cancelButtonIndex }, (index) => {
 			switch (index) {
 				case 0:
-					setBooks([...books.sort((a,b) => a.title.localeCompare(b.title))]);
+					setBooks([...books.sort((a,b) => a.title.toLowerCase().localeCompare(b.title.toLowerCase()))]);
                     break;
 				case 1:
-					setBooks([...books.sort((a,b) => b.title.localeCompare(a.title))]);
+					setBooks([...books.sort((a,b) => b.title.toLowerCase().localeCompare(a.title.toLowerCase()))]);
                     break;
 				case 2:
 					setBooks([...books.sort((a,b) => b.dateAdded - a.dateAdded)]);
