@@ -98,6 +98,7 @@ const MainScreen = () => {
 				<TextInput
 					autoCapitalize="words"
 					onChangeText={(newTitle) => setTitle(newTitle)}
+                    onEndEditing={(title) => addBook(title)}
 					placeholder="Enter Book Title"
 					placeholderTextColor="#DDA15E"
 					style={styles.textInputStyle}
