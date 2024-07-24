@@ -1,6 +1,6 @@
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
-import MainScreen from "./screens/MainScreen";
+import MainScreen from "./src/screens/MainScreen";
 import { ActionSheetProvider } from "@expo/react-native-action-sheet";
 
 const Stack = createStackNavigator();
