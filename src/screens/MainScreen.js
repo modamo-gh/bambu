@@ -29,6 +29,8 @@ const MainScreen = () => {
 	const addBook = async () => {
 		const date = new Date();
 		const book = await scrapeGoodreads(title);
+
+		console.log(book);
 		book.date = date.getTime();
 
 		const updatedBooks = [...books, book];
@@ -149,23 +151,28 @@ const styles = StyleSheet.create({
 		width: 48
 	},
 	books: {
-		alignItems: "center",
 		backgroundColor: "#DDA15E",
 		borderRadius: 5,
 		flexDirection: "row",
 		fontSize: 18,
-		height: 48,
 		justifyContent: "space-between",
-		margin: 8
+		margin: 8,
+		minHeight: 48,
 	},
-	bookText: { color: "#283618", padding: 8 },
+	bookText: {
+		color: "#283618",
+		padding: 8,
+		flexWrap: "wrap",
+		maxWidth: "80%",
+		fontSize: 16
+	},
 	deleteBooksButtonStyle: {
 		alignItems: "center",
 		backgroundColor: "#BC4749",
 		borderRadius: 5,
-		height: 48,
+		height: "100%",
 		justifyContent: "center",
-		width: 48
+		width: 48,
 	},
 	inputAndButtonContainerStyle: {
 		flexDirection: "row",
