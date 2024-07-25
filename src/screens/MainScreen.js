@@ -3,6 +3,7 @@ import { FlatList, StyleSheet, Text, TextInput, View } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useActionSheet } from "@expo/react-native-action-sheet";
 import ActionButton from "../components/ActionButton";
+import { scrapeGoodreads } from "../services/dataFetcher";
 
 const MainScreen = () => {
 	const [title, setTitle] = useState("");
@@ -27,8 +28,10 @@ const MainScreen = () => {
 
 	const addBook = async () => {
 		const date = new Date();
-		const newBook = { title: title, dateAdded: date.getTime() };
-		const updatedBooks = [...books, newBook];
+		const book = await scrapeGoodreads(title);
+		book.date = date.getTime();
+
+		const updatedBooks = [...books, book];
 
 		try {
 			await AsyncStorage.setItem("books", JSON.stringify(updatedBooks));
