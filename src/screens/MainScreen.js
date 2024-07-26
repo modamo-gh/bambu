@@ -42,6 +42,7 @@ const MainScreen = () => {
 
 		setBooks(mutableBooks);
 	};
+
 	const normalizeAverageRatings = () => {
 		const averageRatings = books.map((book) => book.averageRating);
 		console.log(averageRatings);
@@ -141,7 +142,7 @@ const MainScreen = () => {
 				<TextInput
 					autoCapitalize="words"
 					onChangeText={(newSearchTerm) => setSearchTerm(newSearchTerm)}
-					onEndEditing={(searchTerm) => {
+					onEndEditing={() => {
 						if (searchTerm.length) {
 							addBook(searchTerm);
 						}
@@ -153,7 +154,7 @@ const MainScreen = () => {
 				/>
 				<ActionButton
 					buttonStyle={styles.addBooksButtonStyle}
-					onPress={(searchTerm) => {
+					onPress={() => {
 						if (searchTerm.length) {
 							addBook(searchTerm);
 						}
