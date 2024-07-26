@@ -141,7 +141,9 @@ const MainScreen = () => {
 			<View style={styles.inputAndButtonContainerStyle}>
 				<TextInput
 					autoCapitalize="words"
-					onChangeText={(newSearchTerm) => setSearchTerm(newSearchTerm)}
+					onChangeText={(newSearchTerm) =>
+						setSearchTerm(newSearchTerm)
+					}
 					onEndEditing={() => {
 						if (searchTerm.length) {
 							addBook(searchTerm);
@@ -204,7 +206,8 @@ const styles = StyleSheet.create({
 		fontSize: 18,
 		justifyContent: "space-between",
 		margin: 8,
-		minHeight: 48
+		height: 48,
+		padding: 8
 	},
 	bookText: {
 		color: "#283618",
