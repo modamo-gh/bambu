@@ -6,7 +6,7 @@ import ActionButton from "../components/ActionButton";
 import { scrapeGoodreads } from "../services/dataFetcher";
 
 const MainScreen = () => {
-	const [title, setTitle] = useState("");
+	const [searchTerm, setSearchTerm] = useState("");
 	const [books, setBooks] = useState([]);
 
 	const { showActionSheetWithOptions } = useActionSheet();
@@ -34,8 +34,7 @@ const MainScreen = () => {
 				book.timeToReadInMinutes = (book.numberOfPages * 275) / 250;
 				book.eph =
 					book.normalizedAverageRating /
-					(book.timeToReadInMinutes /
-					60);
+					(book.timeToReadInMinutes / 60);
 			});
 		}
 
@@ -64,7 +63,7 @@ const MainScreen = () => {
 
 	const addBook = async () => {
 		const date = new Date();
-		const book = await scrapeGoodreads(title);
+		const book = await scrapeGoodreads(searchTerm);
 		book.date = date.getTime();
 		book.averageRating = (book.amazonRating + book.goodreadsRating) / 2;
 
@@ -77,7 +76,7 @@ const MainScreen = () => {
 		try {
 			await AsyncStorage.setItem("books", JSON.stringify(updatedBooks));
 			setBooks(updatedBooks);
-			setTitle("");
+			setSearchTerm("");
 		} catch (error) {
 			console.error("Something went wrong saving the book:", error);
 		}
@@ -141,16 +140,24 @@ const MainScreen = () => {
 			<View style={styles.inputAndButtonContainerStyle}>
 				<TextInput
 					autoCapitalize="words"
-					onChangeText={(newTitle) => setTitle(newTitle)}
-					onEndEditing={(title) => {if(title.length){addBook(title)}}}
+					onChangeText={(newSearchTerm) => setSearchTerm(newSearchTerm)}
+					onEndEditing={(searchTerm) => {
+						if (searchTerm.length) {
+							addBook(searchTerm);
+						}
+					}}
 					placeholder="Enter Book Title"
 					placeholderTextColor="#DDA15E"
 					style={styles.textInputStyle}
-					value={title}
+					value={searchTerm}
 				/>
 				<ActionButton
 					buttonStyle={styles.addBooksButtonStyle}
-					onPress={(title) => {if(title.length){addBook(title)}}}
+					onPress={(searchTerm) => {
+						if (searchTerm.length) {
+							addBook(searchTerm);
+						}
+					}}
 					text="+"
 				/>
 			</View>
