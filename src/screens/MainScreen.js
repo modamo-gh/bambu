@@ -142,7 +142,7 @@ const MainScreen = () => {
 				<TextInput
 					autoCapitalize="words"
 					onChangeText={(newTitle) => setTitle(newTitle)}
-					onEndEditing={(title) => addBook(title)}
+					onEndEditing={(title) => {if(title.length){addBook(title)}}}
 					placeholder="Enter Book Title"
 					placeholderTextColor="#DDA15E"
 					style={styles.textInputStyle}
@@ -150,7 +150,7 @@ const MainScreen = () => {
 				/>
 				<ActionButton
 					buttonStyle={styles.addBooksButtonStyle}
-					onPress={addBook}
+					onPress={(title) => {if(title.length){addBook(title)}}}
 					text="+"
 				/>
 			</View>
