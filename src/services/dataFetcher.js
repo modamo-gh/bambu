@@ -27,7 +27,7 @@ export const scrapeGoodreads = async (term) => {
 			const imageURL = bookJSON.image;
 			const numberOfPages = bookJSON.numberOfPages;
 			const isbn = bookJSON.isbn;
-			const rating = bookJSON.aggregateRating.ratingValue;
+			const goodreadsRating = bookJSON.aggregateRating.ratingValue;
 
 			const scriptJSON = JSON.parse(book_$("#__NEXT_DATA__").text());
 
@@ -48,7 +48,7 @@ export const scrapeGoodreads = async (term) => {
 				const amazon_$ = cheerio.load(amazonHTML);
 				const amazonRating = parseFloat(amazon_$(".a-size-base.a-color-base").text());
 
-                return {title, imageURL, numberOfPages, isbn, rating, amazonRating}
+                return {title, imageURL, numberOfPages, isbn, goodreadsRating, amazonRating}
 			} catch (error) {
 				console.error("Error scraping Amazon book data:", error)
 			}

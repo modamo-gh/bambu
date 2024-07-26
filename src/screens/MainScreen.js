@@ -26,14 +26,53 @@ const MainScreen = () => {
 		getBooks();
 	}, []);
 
+	const calculateEPH = () => {
+		const mutableBooks = [...books];
+
+		if (books.length > 1) {
+			mutableBooks.forEach((book) => {
+				book.timeToReadInMinutes = (book.numberOfPages * 275) / 250;
+				book.eph =
+					book.normalizedAverageRating /
+					(book.timeToReadInMinutes /
+					60);
+			});
+		}
+
+		console.log(mutableBooks);
+
+		setBooks(mutableBooks);
+	};
+	const normalizeAverageRatings = () => {
+		const averageRatings = books.map((book) => book.averageRating);
+		console.log(averageRatings);
+		let lowestRating = Math.min(...averageRatings);
+		let highestRating = Math.max(...averageRatings);
+
+		const mutableBooks = [...books];
+
+		if (books.length > 1) {
+			mutableBooks.forEach((book) => {
+				book.normalizedAverageRating =
+					(100 * (book.averageRating - lowestRating)) /
+					(highestRating - lowestRating);
+			});
+		}
+
+		setBooks(mutableBooks);
+	};
+
 	const addBook = async () => {
 		const date = new Date();
 		const book = await scrapeGoodreads(title);
-
-		console.log(book);
 		book.date = date.getTime();
+		book.averageRating = (book.amazonRating + book.goodreadsRating) / 2;
 
 		const updatedBooks = [...books, book];
+		setBooks(updatedBooks);
+
+		normalizeAverageRatings();
+		calculateEPH();
 
 		try {
 			await AsyncStorage.setItem("books", JSON.stringify(updatedBooks));
@@ -157,7 +196,7 @@ const styles = StyleSheet.create({
 		fontSize: 18,
 		justifyContent: "space-between",
 		margin: 8,
-		minHeight: 48,
+		minHeight: 48
 	},
 	bookText: {
 		color: "#283618",
@@ -172,7 +211,7 @@ const styles = StyleSheet.create({
 		borderRadius: 5,
 		height: "100%",
 		justifyContent: "center",
-		width: 48,
+		width: 48
 	},
 	inputAndButtonContainerStyle: {
 		flexDirection: "row",
