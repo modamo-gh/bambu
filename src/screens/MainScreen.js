@@ -176,7 +176,7 @@ const MainScreen = () => {
 				renderItem={({ item }) => {
 					return (
 						<View style={styles.books}>
-							<Text style={styles.bookText}>{item.title}</Text>
+							<Text style={styles.bookText} numberOfLines={1} ellipsizeMode="tail">{item.title}</Text>
 							<ActionButton
 								buttonStyle={styles.deleteBooksButtonStyle}
 								onPress={() => deleteBook(item)}
@@ -200,19 +200,18 @@ const styles = StyleSheet.create({
 		width: 48
 	},
 	books: {
+		alignItems: "center",
 		backgroundColor: "#DDA15E",
 		borderRadius: 5,
 		flexDirection: "row",
 		fontSize: 18,
-		justifyContent: "space-between",
-		margin: 8,
 		height: 48,
-		padding: 8
+		justifyContent: "space-between",
+		margin: 8
 	},
 	bookText: {
 		color: "#283618",
 		padding: 8,
-		flexWrap: "wrap",
 		maxWidth: "80%",
 		fontSize: 16
 	},
