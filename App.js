@@ -2,6 +2,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import MainScreen from "./src/screens/MainScreen";
 import { ActionSheetProvider } from "@expo/react-native-action-sheet";
+import BookScreen from "./src/screens/BookScreen";
 
 const Stack = createStackNavigator();
 
@@ -13,6 +14,16 @@ const App = () => {
 					<Stack.Screen
 						name="Main"
 						component={MainScreen}
+						options={{
+							headerStyle: { backgroundColor: "#FEFAE0" },
+							headerTintColor: "#283618",
+							headerTitleStyle: { fontWeight: "bold" },
+							title: "bamboo"
+						}}
+					/>
+					<Stack.Screen
+						name="Book"
+						component={BookScreen}
 						options={{
 							headerStyle: { backgroundColor: "#FEFAE0" },
 							headerTintColor: "#283618",

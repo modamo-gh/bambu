@@ -1,11 +1,18 @@
 import React, { useEffect, useState } from "react";
-import { FlatList, StyleSheet, Text, TextInput, View } from "react-native";
+import {
+	FlatList,
+	StyleSheet,
+	Text,
+	TextInput,
+	TouchableOpacity,
+	View
+} from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useActionSheet } from "@expo/react-native-action-sheet";
 import ActionButton from "../components/ActionButton";
 import { scrapeBookData } from "../services/dataFetcher";
 
-const MainScreen = () => {
+const MainScreen = ({ navigation }) => {
 	const [searchTerm, setSearchTerm] = useState("");
 	const [books, setBooks] = useState([]);
 	const [isLoading, setIsLoading] = useState(false);
@@ -33,9 +40,10 @@ const MainScreen = () => {
 		if (books.length > 1) {
 			mutableBooks.forEach((book) => {
 				book.timeToReadInMinutes = (book.numberOfPages * 275) / 250;
-				book.eph =
+				book.eph = (
 					book.normalizedAverageRating /
-					(book.timeToReadInMinutes / 60);
+					(book.timeToReadInMinutes / 60)
+				).toFixed(2);
 			});
 		}
 
@@ -51,9 +59,10 @@ const MainScreen = () => {
 
 		if (books.length > 1) {
 			mutableBooks.forEach((book) => {
-				book.normalizedAverageRating =
+				book.normalizedAverageRating = (
 					(100 * (book.averageRating - lowestRating)) /
-					(highestRating - lowestRating);
+					(highestRating - lowestRating)
+				).toFixed(2);
 			});
 		}
 
@@ -66,13 +75,19 @@ const MainScreen = () => {
 		const book = await scrapeBookData(searchTerm);
 		setIsLoading(false);
 		book.dateAdded = date.getTime();
-		book.averageRating = (book.amazonRating + book.goodreadsRating) / 2;
+		book.averageRating = (
+			(book.amazonRating + book.goodreadsRating) /
+			2
+		).toFixed(3);
+		book.timeToReadInMinutes = (book.numberOfPages * 275) / 250;
 
 		const updatedBooks = [...books, book];
 		setBooks(updatedBooks);
 
 		normalizeAverageRatings();
 		calculateEPH();
+
+		console.log(book);
 
 		try {
 			await AsyncStorage.setItem("books", JSON.stringify(updatedBooks));
@@ -193,7 +208,12 @@ const MainScreen = () => {
 				data={books}
 				renderItem={({ item }) => {
 					return (
-						<View style={styles.books}>
+						<TouchableOpacity
+							style={styles.books}
+							onPress={() =>
+								navigation.navigate("Book", { book: item })
+							}
+						>
 							<Text
 								style={styles.bookText}
 								numberOfLines={1}
@@ -206,7 +226,7 @@ const MainScreen = () => {
 								onPress={() => deleteBook(item)}
 								text="X"
 							/>
-						</View>
+						</TouchableOpacity>
 					);
 				}}
 			/>

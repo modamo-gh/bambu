@@ -26,7 +26,6 @@ export const scrapeBookData = async (term) => {
 			const title = bookJSON.name;
 			const imageURL = bookJSON.image;
 			const numberOfPages = bookJSON.numberOfPages;
-			const isbn = bookJSON.isbn;
 			const goodreadsRating = bookJSON.aggregateRating.ratingValue;
 
 			const scriptJSON = JSON.parse(book_$("#__NEXT_DATA__").text());
@@ -46,11 +45,19 @@ export const scrapeBookData = async (term) => {
 				const amazonHTML = amazonResponse.data;
 
 				const amazon_$ = cheerio.load(amazonHTML);
-				const amazonRating = parseFloat(amazon_$(".a-size-base.a-color-base").text());
+				const amazonRating = parseFloat(
+					amazon_$(".a-size-base.a-color-base").text()
+				);
 
-                return {title, imageURL, numberOfPages, isbn, goodreadsRating, amazonRating}
+				return {
+					amazonRating,
+					goodreadsRating,
+					imageURL,
+					numberOfPages,
+					title
+				};
 			} catch (error) {
-				console.error("Error scraping Amazon book data:", error)
+				console.error("Error scraping Amazon book data:", error);
 			}
 		} catch (error) {
 			console.error("Error scraping book data:", error);
