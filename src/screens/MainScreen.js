@@ -34,39 +34,40 @@ const MainScreen = ({ navigation }) => {
 		getBooks();
 	}, []);
 
-	const calculateEPH = () => {
-		const mutableBooks = [...books];
+	const getBooksWithEPH = (books) => {
+		let booksWithEPH;
 
-		if (books.length > 1) {
-			mutableBooks.forEach((book) => {
-				book.timeToReadInMinutes = (book.numberOfPages * 275) / 250;
-				book.eph = (
-					book.normalizedAverageRating /
-					(book.timeToReadInMinutes / 60)
-				).toFixed(2);
-			});
-		}
+		books.length > 1
+			? (booksWithEPH = books.map((book) => ({
+					...book,
+					timeToReadInMinutes: (book.numberOfPages * 275) / 250,
+					eph:
+						book.normalizedAverageRating /
+						(book.timeToReadInMinutes / 60).toFixed(2)
+			  })))
+			: (booksWithEPH = [...books]);
 
-		setBooks(mutableBooks);
+		return booksWithEPH;
 	};
 
-	const normalizeAverageRatings = () => {
+	const getBooksWithNormalizedAverageRatings = (books) => {
 		const averageRatings = books.map((book) => book.averageRating);
 		let lowestRating = Math.min(...averageRatings);
 		let highestRating = Math.max(...averageRatings);
 
-		const mutableBooks = [...books];
+		let booksWithNormalizedAverageRatings;
 
-		if (books.length > 1) {
-			mutableBooks.forEach((book) => {
-				book.normalizedAverageRating = (
-					(100 * (book.averageRating - lowestRating)) /
-					(highestRating - lowestRating)
-				).toFixed(2);
-			});
-		}
+		books.length > 1
+			? (booksWithNormalizedAverageRatings = books.map((book) => ({
+					...book,
+					normalizedAverageRating: (
+						(100 * (book.averageRating - lowestRating)) /
+						(highestRating - lowestRating)
+					).toFixed(2)
+			  })))
+			: (booksWithNormalizedAverageRatings = [...books]);
 
-		setBooks(mutableBooks);
+		return booksWithNormalizedAverageRatings;
 	};
 
 	const addBook = async () => {
@@ -81,13 +82,11 @@ const MainScreen = ({ navigation }) => {
 		).toFixed(3);
 		book.timeToReadInMinutes = (book.numberOfPages * 275) / 250;
 
-		const updatedBooks = [...books, book];
+		let updatedBooks = [...books, book];
+
+		updatedBooks = getBooksWithNormalizedAverageRatings(updatedBooks);
+		updatedBooks = getBooksWithEPH(updatedBooks);
 		setBooks(updatedBooks);
-
-		normalizeAverageRatings();
-		calculateEPH();
-
-		console.log(book);
 
 		try {
 			await AsyncStorage.setItem("books", JSON.stringify(updatedBooks));
@@ -99,12 +98,12 @@ const MainScreen = ({ navigation }) => {
 	};
 
 	const deleteBook = async (bookToDelete) => {
-		const updatedBooks = [
+		let updatedBooks = [
 			...books.filter((book) => book.title !== bookToDelete.title)
 		];
 
-		normalizeAverageRatings();
-		calculateEPH();
+		updatedBooks = getBooksWithNormalizedAverageRatings(updatedBooks);
+		updatedBooks = getBooksWithEPH(updatedBooks);
 
 		try {
 			await AsyncStorage.setItem("books", JSON.stringify(updatedBooks));
