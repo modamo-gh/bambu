@@ -88,6 +88,9 @@ const MainScreen = () => {
 			...books.filter((book) => book.title !== bookToDelete.title)
 		];
 
+		normalizeAverageRatings();
+		calculateEPH();
+
 		try {
 			await AsyncStorage.setItem("books", JSON.stringify(updatedBooks));
 			setBooks(updatedBooks);
