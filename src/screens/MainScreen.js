@@ -38,14 +38,11 @@ const MainScreen = () => {
 			});
 		}
 
-		console.log(mutableBooks);
-
 		setBooks(mutableBooks);
 	};
 
 	const normalizeAverageRatings = () => {
 		const averageRatings = books.map((book) => book.averageRating);
-		console.log(averageRatings);
 		let lowestRating = Math.min(...averageRatings);
 		let highestRating = Math.max(...averageRatings);
 
@@ -65,7 +62,7 @@ const MainScreen = () => {
 	const addBook = async () => {
 		const date = new Date();
 		const book = await scrapeGoodreads(searchTerm);
-		book.date = date.getTime();
+		book.dateAdded = date.getTime();
 		book.averageRating = (book.amazonRating + book.goodreadsRating) / 2;
 
 		const updatedBooks = [...books, book];
@@ -100,8 +97,16 @@ const MainScreen = () => {
 	};
 
 	const onSortPress = () => {
-		const options = ["A - Z", "Z - A", "Newest", "Oldest", "Cancel"];
-		const cancelButtonIndex = 4;
+		const options = [
+			"A - Z",
+			"Z - A",
+			"Least to Most Recent",
+			"Most to Least Recent",
+			"Lowest to Highest EPH",
+			"Highest to Lowest EPH",
+			"Cancel"
+		];
+		const cancelButtonIndex = 6;
 
 		showActionSheetWithOptions({ options, cancelButtonIndex }, (index) => {
 			switch (index) {
@@ -125,13 +130,19 @@ const MainScreen = () => {
 					break;
 				case 2:
 					setBooks([
-						...books.sort((a, b) => b.dateAdded - a.dateAdded)
+						...books.sort((a, b) => a.dateAdded - b.dateAdded)
 					]);
 					break;
 				case 3:
 					setBooks([
-						...books.sort((a, b) => a.dateAdded - b.dateAdded)
+						...books.sort((a, b) => b.dateAdded - a.dateAdded)
 					]);
+					break;
+				case 4:
+					setBooks([...books.sort((a, b) => a.eph - b.eph)]);
+					break;
+				case 5:
+					setBooks([...books.sort((a, b) => b.eph - a.eph)]);
 					break;
 				case cancelButtonIndex:
 					break;
@@ -179,7 +190,13 @@ const MainScreen = () => {
 				renderItem={({ item }) => {
 					return (
 						<View style={styles.books}>
-							<Text style={styles.bookText} numberOfLines={1} ellipsizeMode="tail">{item.title}</Text>
+							<Text
+								style={styles.bookText}
+								numberOfLines={1}
+								ellipsizeMode="tail"
+							>
+								{item.title}
+							</Text>
 							<ActionButton
 								buttonStyle={styles.deleteBooksButtonStyle}
 								onPress={() => deleteBook(item)}
