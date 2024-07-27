@@ -8,6 +8,7 @@ import { scrapeBookData } from "../services/dataFetcher";
 const MainScreen = () => {
 	const [searchTerm, setSearchTerm] = useState("");
 	const [books, setBooks] = useState([]);
+	const [isLoading, setIsLoading] = useState(false);
 
 	const { showActionSheetWithOptions } = useActionSheet();
 
@@ -61,7 +62,9 @@ const MainScreen = () => {
 
 	const addBook = async () => {
 		const date = new Date();
+		setIsLoading(true);
 		const book = await scrapeBookData(searchTerm);
+		setIsLoading(false);
 		book.dateAdded = date.getTime();
 		book.averageRating = (book.amazonRating + book.goodreadsRating) / 2;
 
@@ -170,6 +173,7 @@ const MainScreen = () => {
 				/>
 				<ActionButton
 					buttonStyle={styles.addBooksButtonStyle}
+					isLoading={isLoading}
 					onPress={() => {
 						if (searchTerm.length) {
 							addBook(searchTerm);

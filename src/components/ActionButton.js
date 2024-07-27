@@ -1,13 +1,21 @@
 import React from "react";
 import { Text, TouchableOpacity, StyleSheet } from "react-native";
+import { BallIndicator } from "react-native-indicators";
 
-const ActionButton = ({ buttonStyle, onPress, text}) => {
+const ActionButton = ({ buttonStyle, isLoading, onPress, text }) => {
 	return (
 		<TouchableOpacity
 			onPress={onPress}
 			style={buttonStyle}
 		>
-			<Text style={styles.textStyle}>{text}</Text>
+			{isLoading ? (
+				<BallIndicator
+					color="#FEFAE0"
+					size={24}
+				/>
+			) : (
+				<Text style={styles.textStyle}>{text}</Text>
+			)}
 		</TouchableOpacity>
 	);
 };
