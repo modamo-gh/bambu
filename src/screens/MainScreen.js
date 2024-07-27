@@ -3,7 +3,7 @@ import { FlatList, StyleSheet, Text, TextInput, View } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useActionSheet } from "@expo/react-native-action-sheet";
 import ActionButton from "../components/ActionButton";
-import { scrapeGoodreads } from "../services/dataFetcher";
+import { scrapeBookData } from "../services/dataFetcher";
 
 const MainScreen = () => {
 	const [searchTerm, setSearchTerm] = useState("");
@@ -61,7 +61,7 @@ const MainScreen = () => {
 
 	const addBook = async () => {
 		const date = new Date();
-		const book = await scrapeGoodreads(searchTerm);
+		const book = await scrapeBookData(searchTerm);
 		book.dateAdded = date.getTime();
 		book.averageRating = (book.amazonRating + book.goodreadsRating) / 2;
 

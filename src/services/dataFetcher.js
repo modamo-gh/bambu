@@ -1,7 +1,7 @@
 import axios from "axios";
 import * as cheerio from "cheerio";
 
-export const scrapeGoodreads = async (term) => {
+export const scrapeBookData = async (term) => {
 	const baseURL = "https://www.goodreads.com";
 
 	try {
