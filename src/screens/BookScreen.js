@@ -100,9 +100,10 @@ const BookScreen = ({ route }) => {
 const styles = StyleSheet.create({
 	container: { display: "flex", flex: 1 },
 	image: {
-		flex: 3
+		flex: 3,
+		objectFit: "contain"
 	},
-	details: { flex: 1 }
+	details: { flex: 2 }
 });
 
 export default BookScreen;

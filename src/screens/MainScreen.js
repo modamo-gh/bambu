@@ -42,8 +42,8 @@ const MainScreen = ({ navigation }) => {
 					...book,
 					timeToReadInMinutes: (book.numberOfPages * 275) / 250,
 					eph:
-						book.normalizedAverageRating /
-						(book.timeToReadInMinutes / 60).toFixed(2)
+						(book.normalizedAverageRating /
+						(book.timeToReadInMinutes / 60)).toFixed(2)
 			  })))
 			: (booksWithEPH = [...books]);
 
@@ -214,9 +214,9 @@ const MainScreen = ({ navigation }) => {
 							}
 						>
 							<Text
-								style={styles.bookText}
-								numberOfLines={1}
 								ellipsizeMode="tail"
+								numberOfLines={1}
+								style={styles.bookText}
 							>
 								{item.title}
 							</Text>
@@ -254,9 +254,9 @@ const styles = StyleSheet.create({
 	},
 	bookText: {
 		color: "#283618",
-		padding: 8,
+		fontSize: 16,
 		maxWidth: "80%",
-		fontSize: 16
+		padding: 8,
 	},
 	deleteBooksButtonStyle: {
 		alignItems: "center",
@@ -272,13 +272,13 @@ const styles = StyleSheet.create({
 	},
 	screenContainerStyle: { flex: 1, backgroundColor: "#FEFAE0" },
 	sortButtonStyle: {
-		backgroundColor: "#606C38",
-		height: 48,
-		width: 60,
-		justifyContent: "center",
-		borderRadius: 5,
 		alignSelf: "flex-end",
-		marginHorizontal: 8
+		backgroundColor: "#606C38",
+		borderRadius: 5,
+		height: 48,
+		justifyContent: "center",
+		marginHorizontal: 8,
+		width: 60,
 	},
 	textInputStyle: {
 		borderColor: "#606C38",
