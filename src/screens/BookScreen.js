@@ -8,10 +8,17 @@ const BookScreen = ({ route }) => {
 
 	return (
 		<View style={styles.container}>
-			<Image
-				source={{ uri: book.imageURL }}
-				style={styles.image}
-			/>
+			<View style={styles.imageContainer}>
+				<Image
+					source={{ uri: book.imageURL }}
+					style={styles.image}
+					blurRadius={8}
+				/>
+				<Image
+					source={{ uri: book.imageURL }}
+					style={styles.overlayImage}
+				/>
+			</View>
 			<Grid style={styles.details}>
 				<Row>
 					<Col>
@@ -99,11 +106,21 @@ const BookScreen = ({ route }) => {
 
 const styles = StyleSheet.create({
 	container: { display: "flex", flex: 1 },
+	details: { flex: 2 },
 	image: {
-		flex: 3,
-		objectFit: "contain"
+		flex: 1,
+		height: "100%",
+		position: "absolute",
+		width: "100%",
 	},
-	details: { flex: 2 }
+	imageContainer: {
+		flex: 3
+	},
+	overlayImage: {
+		flex:1,
+		objectFit: "contain",
+		zIndex: 1,
+	}
 });
 
 export default BookScreen;
