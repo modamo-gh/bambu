@@ -1,5 +1,5 @@
 import React from "react";
-import { Image, StyleSheet, View } from "react-native";
+import { Image, ImageBackground, StyleSheet, View } from "react-native";
 import BookDetails from "../components/BookDetail";
 import { Col, Row, Grid } from "react-native-easy-grid";
 
@@ -9,15 +9,16 @@ const BookScreen = ({ route }) => {
 	return (
 		<View style={styles.container}>
 			<View style={styles.imageContainer}>
-				<Image
-					source={{ uri: book.imageURL }}
-					style={styles.image}
+				<ImageBackground
 					blurRadius={8}
-				/>
-				<Image
 					source={{ uri: book.imageURL }}
-					style={styles.overlayImage}
-				/>
+					style={styles.backgroundImage}
+				>
+					<Image
+						source={{ uri: book.imageURL }}
+						style={styles.overlayImage}
+					/>
+				</ImageBackground>
 			</View>
 			<Grid style={styles.details}>
 				<Row>
@@ -107,19 +108,15 @@ const BookScreen = ({ route }) => {
 const styles = StyleSheet.create({
 	container: { display: "flex", flex: 1 },
 	details: { flex: 2 },
-	image: {
-		flex: 1,
-		height: "100%",
-		position: "absolute",
-		width: "100%",
+	backgroundImage: {
+		height: "100%"
 	},
 	imageContainer: {
 		flex: 3
 	},
 	overlayImage: {
-		flex:1,
-		objectFit: "contain",
-		zIndex: 1,
+		flex: 1,
+		objectFit: "contain"
 	}
 });
 
