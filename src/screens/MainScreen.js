@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import {
 	FlatList,
+	Image,
 	StyleSheet,
 	Text,
 	TextInput,
@@ -16,6 +17,9 @@ const MainScreen = ({ navigation }) => {
 	const [searchTerm, setSearchTerm] = useState("");
 	const [books, setBooks] = useState([]);
 	const [isLoading, setIsLoading] = useState(false);
+	const [isListLayout, setIsListLayout] = useState(true);
+	const [numColumns, setNumColumns] = useState(1);
+	const [containerHeight, setContainerHeight] = useState(0);
 
 	const { showActionSheetWithOptions } = useActionSheet();
 
@@ -30,6 +34,11 @@ const MainScreen = ({ navigation }) => {
 		}
 	};
 
+	const onLayout = (event) => {
+		const { height } = event.nativeEvent.layout;
+		setContainerHeight(height);
+	};
+
 	useEffect(() => {
 		getBooks();
 	}, []);
@@ -41,9 +50,10 @@ const MainScreen = ({ navigation }) => {
 			? (booksWithEPH = books.map((book) => ({
 					...book,
 					timeToReadInMinutes: (book.numberOfPages * 275) / 250,
-					eph:
-						(book.normalizedAverageRating /
-						(book.timeToReadInMinutes / 60)).toFixed(2)
+					eph: (
+						book.normalizedAverageRating /
+						(book.timeToReadInMinutes / 60)
+					).toFixed(2)
 			  })))
 			: (booksWithEPH = [...books]);
 
@@ -110,6 +120,16 @@ const MainScreen = ({ navigation }) => {
 			setBooks(updatedBooks);
 		} catch (error) {
 			console.error("Something went wrong deleting the book:", error);
+		}
+	};
+
+	const onLayoutPress = () => {
+		setIsListLayout(!isListLayout);
+
+		if (numColumns === 1) {
+			setNumColumns(2);
+		} else {
+			setNumColumns(1);
 		}
 	};
 
@@ -197,38 +217,84 @@ const MainScreen = ({ navigation }) => {
 				/>
 			</View>
 			{books.length ? (
-				<ActionButton
-					buttonStyle={styles.sortButtonStyle}
-					onPress={onSortPress}
-					text="Sort"
-				/>
+				<View
+					style={{
+						flexDirection: "row",
+						justifyContent: "space-between"
+					}}
+				>
+					<ActionButton
+						buttonStyle={styles.layoutButtonStyle}
+						onPress={onLayoutPress}
+						text="Layout"
+					/>
+
+					<ActionButton
+						buttonStyle={styles.sortButtonStyle}
+						onPress={onSortPress}
+						text="Sort"
+					/>
+				</View>
 			) : null}
-			<FlatList
-				data={books}
-				renderItem={({ item }) => {
-					return (
-						<TouchableOpacity
-							style={styles.books}
-							onPress={() =>
-								navigation.navigate("Book", { book: item })
-							}
-						>
-							<Text
-								ellipsizeMode="tail"
-								numberOfLines={1}
-								style={styles.bookText}
+			{isListLayout ? (
+				<FlatList
+					data={books}
+					renderItem={({ item }) => {
+						return (
+							<TouchableOpacity
+								style={styles.listBooks}
+								onPress={() =>
+									navigation.navigate("Book", { book: item })
+								}
 							>
-								{item.title}
-							</Text>
-							<ActionButton
-								buttonStyle={styles.deleteBooksButtonStyle}
-								onPress={() => deleteBook(item)}
-								text="X"
-							/>
-						</TouchableOpacity>
-					);
-				}}
-			/>
+								<Text
+									ellipsizeMode="tail"
+									numberOfLines={1}
+									style={styles.bookText}
+								>
+									{item.title}
+								</Text>
+								<ActionButton
+									buttonStyle={styles.deleteBooksButtonStyle}
+									onPress={() => deleteBook(item)}
+									text="X"
+								/>
+							</TouchableOpacity>
+						);
+					}}
+				/>
+			) : (
+				<View
+					onLayout={onLayout}
+					style={{ flex: 1 }}
+				>
+					<FlatList
+						data={books}
+						numColumns={numColumns}
+						key={numColumns}
+						renderItem={({ item }) => {
+							return (
+								<TouchableOpacity
+									style={[
+										styles.gridBooks,
+										{ height: containerHeight / 2 }
+									]}
+									onPress={() =>
+										navigation.navigate("Book", {
+											book: item
+										})
+									}
+								>
+									<Image
+										source={{ uri: item.imageURL }}
+										style={styles.gridImage}
+									/>
+								</TouchableOpacity>
+							);
+						}}
+					/>
+				</View>
+			)}
 		</View>
 	);
 };
@@ -242,7 +308,7 @@ const styles = StyleSheet.create({
 		justifyContent: "center",
 		width: 48
 	},
-	books: {
+	listBooks: {
 		alignItems: "center",
 		backgroundColor: "#DDA15E",
 		borderRadius: 5,
@@ -256,7 +322,7 @@ const styles = StyleSheet.create({
 		color: "#283618",
 		fontSize: 16,
 		maxWidth: "80%",
-		padding: 8,
+		padding: 8
 	},
 	deleteBooksButtonStyle: {
 		alignItems: "center",
@@ -270,6 +336,26 @@ const styles = StyleSheet.create({
 		flexDirection: "row",
 		padding: 8
 	},
+	gridBooks: {
+		borderRadius: 20,
+		flexBasis: "50%",
+		padding: 15
+	},
+	gridImage: {
+		borderRadius: 20,
+		height: "100%",
+		objectFit: "fill",
+		overflow: "hidden"
+	},
+	layoutButtonStyle: {
+		alignSelf: "flex-end",
+		backgroundColor: "#606C38",
+		borderRadius: 5,
+		height: 48,
+		justifyContent: "center",
+		marginHorizontal: 8,
+		width: 80
+	},
 	screenContainerStyle: { flex: 1, backgroundColor: "#FEFAE0" },
 	sortButtonStyle: {
 		alignSelf: "flex-end",
@@ -278,7 +364,7 @@ const styles = StyleSheet.create({
 		height: 48,
 		justifyContent: "center",
 		marginHorizontal: 8,
-		width: 60,
+		width: 60
 	},
 	textInputStyle: {
 		borderColor: "#606C38",
