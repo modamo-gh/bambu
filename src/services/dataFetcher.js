@@ -26,20 +26,16 @@ export const scrapeSearchResults = async (searchTerm) => {
 	}
 };
 
-export const scrapeBookData = async (term) => {
-	const baseURL = "https://www.goodreads.com";
-
+export const scrapeBookData = async (url) => {
 	try {
-		const response = await axios.get(
-			`${baseURL}/search?utf8=%E2%9C%93&q=${term}&search_type=books`
-		);
+		const response = await axios.get(url);
 		const html = response.data;
 		const $ = cheerio.load(html);
 
 		const firstBook = $("tr[itemtype='http://schema.org/Book']").first();
-		const url = firstBook.find(".bookTitle").attr("href");
+
 		try {
-			const bookResponse = await axios.get(`${baseURL}${url}`);
+			const bookResponse = await axios.get(url);
 			const book_html = bookResponse.data;
 
 			const book_$ = cheerio.load(book_html);

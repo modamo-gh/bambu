@@ -11,7 +11,7 @@ import {
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useActionSheet } from "@expo/react-native-action-sheet";
 import ActionButton from "../components/ActionButton";
-import {scrapeBookData, scrapeSearchResults } from "../services/dataFetcher";
+import { scrapeBookData, scrapeSearchResults } from "../services/dataFetcher";
 
 const MainScreen = ({ navigation }) => {
 	const [searchTerm, setSearchTerm] = useState("");
@@ -88,10 +88,11 @@ const MainScreen = ({ navigation }) => {
 		return booksWithNormalizedAverageRatings;
 	};
 
-	const addBook = async () => {
+	const addBook = async (url) => {
+		setSearchResults([]);
 		const date = new Date();
 		setIsLoading(true);
-		const book = await scrapeBookData(searchTerm);
+		let book = await scrapeBookData(url);
 		setIsLoading(false);
 		book.dateAdded = date.getTime();
 		book.averageRating = (
@@ -198,29 +199,51 @@ const MainScreen = ({ navigation }) => {
 	return (
 		<View style={styles.screenContainerStyle}>
 			<View style={styles.inputAndButtonContainerStyle}>
-				<View style={{ flex: 1 }}>
+				<View style={{ flex: 1, 
+								zIndex: 1 }}>
 					<TextInput
 						autoCapitalize="words"
 						onChangeText={(newSearchTerm) =>
 							setSearchTerm(newSearchTerm)
 						}
 						onEndEditing={() => {
-							if (searchTerm.length) {
-								addBook(searchTerm);
-							}
+							getSearchResults(searchTerm);
 						}}
 						placeholder="Enter Book Title"
 						placeholderTextColor="#DDA15E"
 						style={styles.textInputStyle}
 						value={searchTerm}
 					/>
+					{searchTerm.length && searchResults.length ? (
+						<FlatList
+							data={searchResults}
+							contentContainerStyle={{
+								borderBottomLeftRadius: 5,
+								borderBottomRightRadius: 5,
+								borderColor: "black",
+								borderTopColor: "transparent",
+								borderWidth: 1,
+								marginHorizontal: 8,
+								height: 200
+							}}
+							renderItem={({ item }) => (
+								<TouchableOpacity
+									style={styles.searchResultsStyle}
+									onPress={() => {
+										addBook(item.url);
+									}}
+								>
+									<Text>{item.title}</Text>
+								</TouchableOpacity>
+							)}
+						></FlatList>
+					) : null}
 				</View>
 				<ActionButton
 					buttonStyle={styles.addBooksButtonStyle}
 					isLoading={isLoading}
 					onPress={() => {
 						if (searchTerm.length) {
-							// addBook(searchTerm);
 							getSearchResults(searchTerm);
 						}
 					}}
@@ -368,6 +391,13 @@ const styles = StyleSheet.create({
 		width: 80
 	},
 	screenContainerStyle: { flex: 1, backgroundColor: "#FEFAE0" },
+	searchResultsStyle: {
+		borderWidth: 1,
+		borderBottomColor: "transparent",
+		borderLeftColor: "transparent",
+		borderRightColor: "transparent",
+		borderTopColor: "black"
+	},
 	sortButtonStyle: {
 		alignSelf: "flex-end",
 		backgroundColor: "#606C38",
@@ -382,7 +412,6 @@ const styles = StyleSheet.create({
 		borderRadius: 5,
 		borderWidth: 2,
 		color: "#283618",
-
 		fontSize: 18,
 		height: 48,
 		marginHorizontal: 8,
