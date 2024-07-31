@@ -11,7 +11,7 @@ import {
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useActionSheet } from "@expo/react-native-action-sheet";
 import ActionButton from "../components/ActionButton";
-import { scrapeBookData } from "../services/dataFetcher";
+import {scrapeBookData, scrapeSearchResults } from "../services/dataFetcher";
 
 const MainScreen = ({ navigation }) => {
 	const [searchTerm, setSearchTerm] = useState("");
@@ -20,6 +20,7 @@ const MainScreen = ({ navigation }) => {
 	const [isListLayout, setIsListLayout] = useState(true);
 	const [numColumns, setNumColumns] = useState(1);
 	const [containerHeight, setContainerHeight] = useState(0);
+	const [searchResults, setSearchResults] = useState([]);
 
 	const { showActionSheetWithOptions } = useActionSheet();
 
@@ -32,6 +33,13 @@ const MainScreen = ({ navigation }) => {
 		} catch (error) {
 			console.error("Something went wrong retrieving books:", error);
 		}
+	};
+
+	const getSearchResults = async (searchTerm) => {
+		setIsLoading(true);
+		const results = await scrapeSearchResults(searchTerm);
+		setIsLoading(false);
+		setSearchResults(results);
 	};
 
 	const onLayout = (event) => {
@@ -190,27 +198,30 @@ const MainScreen = ({ navigation }) => {
 	return (
 		<View style={styles.screenContainerStyle}>
 			<View style={styles.inputAndButtonContainerStyle}>
-				<TextInput
-					autoCapitalize="words"
-					onChangeText={(newSearchTerm) =>
-						setSearchTerm(newSearchTerm)
-					}
-					onEndEditing={() => {
-						if (searchTerm.length) {
-							addBook(searchTerm);
+				<View style={{ flex: 1 }}>
+					<TextInput
+						autoCapitalize="words"
+						onChangeText={(newSearchTerm) =>
+							setSearchTerm(newSearchTerm)
 						}
-					}}
-					placeholder="Enter Book Title"
-					placeholderTextColor="#DDA15E"
-					style={styles.textInputStyle}
-					value={searchTerm}
-				/>
+						onEndEditing={() => {
+							if (searchTerm.length) {
+								addBook(searchTerm);
+							}
+						}}
+						placeholder="Enter Book Title"
+						placeholderTextColor="#DDA15E"
+						style={styles.textInputStyle}
+						value={searchTerm}
+					/>
+				</View>
 				<ActionButton
 					buttonStyle={styles.addBooksButtonStyle}
 					isLoading={isLoading}
 					onPress={() => {
 						if (searchTerm.length) {
-							addBook(searchTerm);
+							// addBook(searchTerm);
+							getSearchResults(searchTerm);
 						}
 					}}
 					text="+"
@@ -371,7 +382,7 @@ const styles = StyleSheet.create({
 		borderRadius: 5,
 		borderWidth: 2,
 		color: "#283618",
-		flex: 1,
+
 		fontSize: 18,
 		height: 48,
 		marginHorizontal: 8,

@@ -1,6 +1,31 @@
 import axios from "axios";
 import * as cheerio from "cheerio";
 
+export const scrapeSearchResults = async (searchTerm) => {
+	const baseURL = "https://www.goodreads.com";
+
+	try {
+		const response = await axios.get(
+			`${baseURL}//search?utf8=✓&query=${searchTerm}`
+		);
+		const html = response.data;
+		const $ = cheerio.load(html);
+
+		let results = $("tr[itemtype='http://schema.org/Book']").toArray();
+
+		results = results.map((element) => {
+			return {
+				title: $(element).find(".bookTitle").text(),
+				url: `${baseURL}${$(element).find(".bookTitle").attr("href")}`
+			};
+		});
+
+		return results;
+	} catch (error) {
+		console.error("Error getting search results", error);
+	}
+};
+
 export const scrapeBookData = async (term) => {
 	const baseURL = "https://www.goodreads.com";
 
