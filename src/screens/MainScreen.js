@@ -1,18 +1,15 @@
 import { useActionSheet } from "@expo/react-native-action-sheet";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import React, { useEffect, useState } from "react";
 import {
   FlatList,
   Image,
   StyleSheet,
   Text,
-  TextInput,
   TouchableOpacity,
   View,
 } from "react-native";
 import ActionButton from "../components/ActionButton";
 import Search from "../components/Search";
-import { scrapeBookData } from "../services/dataFetcher";
 
 const MainScreen = ({ navigation }) => {
   const [books, setBooks] = useState([]);
@@ -77,34 +74,6 @@ const MainScreen = ({ navigation }) => {
       : (booksWithNormalizedAverageRatings = [...books]);
 
     return booksWithNormalizedAverageRatings;
-  };
-
-  const addBook = async (url) => {
-    setSearchResults([]);
-    const date = new Date();
-    setIsLoading(true);
-    let book = await scrapeBookData(url);
-    setIsLoading(false);
-    book.dateAdded = date.getTime();
-    book.averageRating = (
-      (book.amazonRating + book.goodreadsRating) /
-      2
-    ).toFixed(3);
-    book.timeToReadInMinutes = (book.numberOfPages * 275) / 250;
-
-    let updatedBooks = [...books, book];
-
-    updatedBooks = getBooksWithNormalizedAverageRatings(updatedBooks);
-    updatedBooks = getBooksWithEPH(updatedBooks);
-    setBooks(updatedBooks);
-
-    try {
-      await AsyncStorage.setItem("books", JSON.stringify(updatedBooks));
-      setBooks(updatedBooks);
-      setSearchTerm("");
-    } catch (error) {
-      console.error("Something went wrong saving the book:", error);
-    }
   };
 
   const deleteBook = async (bookToDelete) => {
@@ -181,7 +150,14 @@ const MainScreen = ({ navigation }) => {
 
   return (
     <View style={styles.screenContainerStyle}>
-      <Search />
+      <Search
+        books={books}
+        getBooksWithEPH={getBooksWithEPH}
+        getBooksWithNormalizedAverageRatings={
+          getBooksWithNormalizedAverageRatings
+        }
+        setBooks={setBooks}
+      />
       {books.length ? (
         <View
           style={{
