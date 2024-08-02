@@ -10,7 +10,6 @@ import {
   View,
 } from "react-native";
 import ActionButton from "./ActionButton";
-import Icon from "react-native-vector-icons/Feather";
 
 const BookDisplay = ({
   books,
@@ -207,7 +206,7 @@ const styles = StyleSheet.create({
   },
   layoutButtonStyle: {
     alignSelf: "flex-end",
-    backgroundColor: "#606C38",
+    backgroundColor: "#283618",
     borderRadius: 5,
     height: 48,
     justifyContent: "center",
@@ -216,7 +215,7 @@ const styles = StyleSheet.create({
   },
   listBooks: {
     alignItems: "center",
-    backgroundColor: "#DDA15E",
+    backgroundColor: "#bcdd96",
     borderRadius: 5,
     flexDirection: "row",
     fontSize: 18,
@@ -226,7 +225,7 @@ const styles = StyleSheet.create({
   },
   sortButtonStyle: {
     alignSelf: "flex-end",
-    backgroundColor: "#606C38",
+    backgroundColor: "#283618",
     borderRadius: 5,
     height: 48,
     justifyContent: "center",

@@ -83,7 +83,7 @@ const styles = StyleSheet.create({
   },
   detail: {
     alignItems: "center",
-    backgroundColor: "#DDA15E",
+    backgroundColor: "#bcdd96",
     borderColor: "black",
     borderRadius: 5,
     borderWidth: 1,
@@ -95,9 +95,10 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: "bold",
     textAlign: "center",
+    color: "#283618",
   },
   modalStyle: {
-    backgroundColor: "#DDA15E",
+    backgroundColor: "#bcdd96",
     borderRadius: 5,
     flexDirection: "column",
     height: "25%",
@@ -110,8 +111,9 @@ const styles = StyleSheet.create({
     alignContent: "center",
     flex: 1,
     justifyContent: "center",
+    color: "#bcdd96",
   },
-  text: { textAlign: "center" },
+  text: { textAlign: "center", color: "#283618" },
 });
 
 export default BookDetails;

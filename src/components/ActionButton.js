@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, Text, TouchableOpacity } from "react-native";
+import { StyleSheet, TouchableOpacity } from "react-native";
 import { BallIndicator } from "react-native-indicators";
 import Icon from "react-native-vector-icons/Feather";
 

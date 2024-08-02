@@ -117,7 +117,7 @@ const Search = ({
 const styles = StyleSheet.create({
   addBooksButtonStyle: {
     alignItems: "center",
-    backgroundColor: "#606C38",
+    backgroundColor: "#283618",
     borderRadius: 50,
     height: 48,
     justifyContent: "center",
@@ -141,7 +141,7 @@ const styles = StyleSheet.create({
     color: "#283618",
     fontSize: 18,
     height: 48,
-    marginHorizontal: 8,
+    marginRight: 8,
     paddingHorizontal: 8,
   },
 });
