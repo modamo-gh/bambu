@@ -102,13 +102,13 @@ const Search = ({
       </View>
       <ActionButton
         buttonStyle={styles.addBooksButtonStyle}
+        iconName="search"
         isLoading={isLoading}
         onPress={() => {
           if (searchTerm.length) {
             getSearchResults(searchTerm);
           }
         }}
-        text="+"
       />
     </View>
   );
