@@ -1,12 +1,18 @@
-import React from "react";
 import LottieView from "lottie-react-native";
-import { View, StyleSheet } from "react-native";
+import React from "react";
+import { StyleSheet, View } from "react-native";
 
 const SplashScreen = () => {
-  return;
-  <View style={styles.container}>
-    <LottieView source={"../../assets/animation_1.json"} autoPlay loop />
-  </View>;
+  return (
+    <View style={styles.container}>
+      <LottieView
+        resizeMode="cover"
+        autoPlay={true}
+        loop={true}
+        source={require("../../assets/splash.json")}
+      />
+    </View>
+  );
 };
 
 const styles = StyleSheet.create({
@@ -14,6 +20,8 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
+    height: 200,
+    width: 200,
   },
 });
 
