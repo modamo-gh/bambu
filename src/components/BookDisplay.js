@@ -203,6 +203,8 @@ const styles = StyleSheet.create({
     height: "100%",
     objectFit: "fill",
     overflow: "hidden",
+    borderWidth: 1,
+    borderColor: "#a4d56d",
   },
   layoutButtonStyle: {
     alignSelf: "flex-end",
