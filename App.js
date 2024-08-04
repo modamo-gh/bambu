@@ -6,7 +6,6 @@ import { useEffect, useState } from "react";
 import BookScreen from "./src/screens/BookScreen";
 import MainScreen from "./src/screens/MainScreen";
 import SplashScreen from "./src/screens/SplashScreen";
-import Animated from "react-native-reanimated";
 
 SplashScreenAPI.preventAutoHideAsync();
 
