@@ -6,53 +6,60 @@ import { useEffect, useState } from "react";
 import BookScreen from "./src/screens/BookScreen";
 import MainScreen from "./src/screens/MainScreen";
 import SplashScreen from "./src/screens/SplashScreen";
+import Animated from "react-native-reanimated";
 
 SplashScreenAPI.preventAutoHideAsync();
 
 const Stack = createStackNavigator();
 
 const App = () => {
-  const [isSplashVisible, setIsSplashVisible] = useState(true);
+	const [isSplashFinished, setIsSplashFinished] = useState(false);
 
-  useEffect(() => {
-    setTimeout(async () => {
-      setIsSplashVisible(false);
-      await SplashScreenAPI.hideAsync();
-    }, 3000);
-  }, []);
+	if (!isSplashFinished) {
+		{
+			SplashScreenAPI.hideAsync();
+		}
+		return <SplashScreen setIsSplashFinished={setIsSplashFinished} />;
+	}
 
-  return (
-    <ActionSheetProvider>
-      <NavigationContainer>
-        {isSplashVisible ? (
-          <SplashScreen />
-        ) : (
-          <Stack.Navigator initialRouteName="Main">
-            <Stack.Screen
-              name="Main"
-              component={MainScreen}
-              options={{
-                headerStyle: { backgroundColor: "#FEFAE0" },
-                headerTintColor: "#283618",
-                headerTitleStyle: { fontWeight: "bold" },
-                title: "bamboo",
-              }}
-            />
-            <Stack.Screen
-              name="Book"
-              component={BookScreen}
-              options={{
-                headerStyle: { backgroundColor: "#FEFAE0" },
-                headerTintColor: "#283618",
-                headerTitleStyle: { fontWeight: "bold" },
-                title: "bamboo",
-              }}
-            />
-          </Stack.Navigator>
-        )}
-      </NavigationContainer>
-    </ActionSheetProvider>
-  );
+	return (
+		<ActionSheetProvider>
+			<NavigationContainer>
+				<Stack.Navigator initialRouteName="Main">
+					<Stack.Screen
+						name="Main"
+						component={MainScreen}
+						options={{
+							headerStyle: { backgroundColor: "#FEFAE0" },
+							headerTintColor: "#283618",
+							headerTitleStyle: { fontWeight: "bold" },
+							title: "bamboo"
+						}}
+					/>
+					<Stack.Screen
+						name="Book"
+						component={BookScreen}
+						options={{
+							headerStyle: { backgroundColor: "#FEFAE0" },
+							headerTintColor: "#283618",
+							headerTitleStyle: { fontWeight: "bold" },
+							title: "bamboo"
+						}}
+					/>
+					<Stack.Screen
+						name="Splash"
+						component={SplashScreen}
+						options={{
+							headerStyle: { backgroundColor: "#FEFAE0" },
+							headerTintColor: "#283618",
+							headerTitleStyle: { fontWeight: "bold" },
+							title: "bamboo"
+						}}
+					/>
+				</Stack.Navigator>
+			</NavigationContainer>
+		</ActionSheetProvider>
+	);
 };
 
 export default App;

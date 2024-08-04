@@ -6,6 +6,11 @@
     "orientation": "portrait",
     "icon": "./assets/appStoreIcon.png",
     "userInterfaceStyle": "light",
+    "splash": {
+        "image": "./assets/splash.png",
+        "backgroundColor": "#FEFAE0",
+        "resizeMode": "cover"
+     },
     "ios": {
       "supportsTablet": true
     },

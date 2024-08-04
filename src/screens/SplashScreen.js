@@ -1,28 +1,21 @@
-import LottieView from "lottie-react-native";
 import React from "react";
-import { StyleSheet, View } from "react-native";
+import LottieView from "lottie-react-native";
 
-const SplashScreen = () => {
-  return (
-    <View style={styles.container}>
-      <LottieView
-        resizeMode="cover"
-        autoPlay={true}
-        loop={true}
-        source={require("../../assets/splash.json")}
-      />
-    </View>
-  );
+const SplashScreen = ({setIsSplashFinished}) => {
+	return (
+		<LottieView
+			source={require("../../assets/splash.json")}
+			style={{
+				backgroundColor: "#FEFAE0",
+				flex: 1,
+				height: "100%",
+				width: "100%",
+			}}
+			autoPlay
+			loop={false}
+      onAnimationFinish={() => setIsSplashFinished(true)}
+		/>
+	);
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    height: 200,
-    width: 200,
-  },
-});
 
 export default SplashScreen;
