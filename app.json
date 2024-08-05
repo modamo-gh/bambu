@@ -7,21 +7,28 @@
     "icon": "./assets/appStoreIcon.png",
     "userInterfaceStyle": "light",
     "splash": {
-        "image": "./assets/splash.png",
-        "backgroundColor": "#FEFAE0",
-        "resizeMode": "cover"
-     },
+      "image": "./assets/splash.png",
+      "backgroundColor": "#FEFAE0",
+      "resizeMode": "cover"
+    },
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.modamo.bamboo"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/playStoreIcon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.modamo.bamboo"
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "7e3756d2-d5f9-4dee-9b28-d513302d2fe9"
+      }
     }
   }
 }
