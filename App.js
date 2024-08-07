@@ -32,7 +32,7 @@ const App = () => {
               headerStyle: { backgroundColor: "#FEFAE0" },
               headerTintColor: "#283618",
               headerTitleStyle: { fontWeight: "bold" },
-              title: "bamboo",
+              title: "bambü",
             }}
           />
           <Stack.Screen
@@ -42,7 +42,7 @@ const App = () => {
               headerStyle: { backgroundColor: "#FEFAE0" },
               headerTintColor: "#283618",
               headerTitleStyle: { fontWeight: "bold" },
-              title: "bamboo",
+              title: "bambü",
             }}
           />
           <Stack.Screen
@@ -52,7 +52,7 @@ const App = () => {
               headerStyle: { backgroundColor: "#FEFAE0" },
               headerTintColor: "#283618",
               headerTitleStyle: { fontWeight: "bold" },
-              title: "bamboo",
+              title: "bambü",
             }}
           />
         </Stack.Navigator>

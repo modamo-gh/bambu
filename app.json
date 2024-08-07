@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "bamboo",
-    "slug": "bamboo",
+    "name": "bambü",
+    "slug": "bambü",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/appStoreIcon.png",
@@ -13,14 +13,14 @@
     },
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.modamo.bamboo"
+      "bundleIdentifier": "com.modamo.bambu"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/playStoreIcon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.modamo.bamboo"
+      "package": "com.modamo.bambu"
     },
     "web": {
       "favicon": "./assets/favicon.png"
