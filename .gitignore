@@ -40,3 +40,6 @@ yarn-error.*
 # Platform Builds
 android/
 ios/
+
+# App
+app.json
