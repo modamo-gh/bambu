@@ -1,8 +1,8 @@
 {
   "expo": {
     "name": "bambü",
-    "slug": "bambü",
-    "version": "2024.08.08",
+    "slug": "bamboo",
+    "version": "2024.08.13",
     "orientation": "portrait",
     "icon": "./assets/appStoreIcon.png",
     "userInterfaceStyle": "light",
@@ -13,7 +13,7 @@
     },
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.modamo.bambu"
+      "bundleIdentifier": "dev.modamo.bambu"
     },
     "android": {
       "adaptiveIcon": {
@@ -24,6 +24,11 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "7e3756d2-d5f9-4dee-9b28-d513302d2fe9"
+      }
     }
   }
 }
