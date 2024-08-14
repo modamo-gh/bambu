@@ -13,7 +13,8 @@
     },
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "dev.modamo.bambu"
+      "bundleIdentifier": "dev.modamo.bambu",
+      "buildNumber": "3"
     },
     "android": {
       "adaptiveIcon": {
