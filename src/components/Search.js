@@ -77,7 +77,7 @@ const Search = ({
 					value={searchTerm}
 				/>
 				{searchTerm.length && searchResults.length ? (
-					<View style={{height: 200}}>
+					<View style={{maxHeight: 200}}>
 						<FlatList
 							data={searchResults}
 							scrollEnabled

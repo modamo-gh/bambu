@@ -135,6 +135,7 @@ const BookDisplay = ({
 			{isListLayout ? (
 				<FlatList
 					data={books}
+					keyExtractor={book => book.imageURL}
 					renderItem={({ item }) => {
 						return (
 							<TouchableOpacity
@@ -177,6 +178,7 @@ const BookDisplay = ({
 					<FlatList
 						data={books}
 						key={numColumns}
+						keyExtractor={book => book.imageURL}
 						numColumns={numColumns}
 						renderItem={({ item }) => {
 							return (
