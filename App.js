@@ -6,6 +6,7 @@ import { useState } from "react";
 import BookScreen from "./src/screens/BookScreen";
 import MainScreen from "./src/screens/MainScreen";
 import SplashScreen from "./src/screens/SplashScreen";
+import 'react-native-gesture-handler'; 
 
 SplashScreenAPI.preventAutoHideAsync();
 

@@ -2,7 +2,7 @@
   "expo": {
     "name": "bambü",
     "slug": "bamboo",
-    "version": "2024.08.13",
+    "version": "2024.08.15",
     "orientation": "portrait",
     "icon": "./assets/appStoreIcon.png",
     "userInterfaceStyle": "light",
@@ -14,7 +14,7 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "dev.modamo.bambu",
-      "buildNumber": "3"
+      "buildNumber": "2"
     },
     "android": {
       "adaptiveIcon": {
