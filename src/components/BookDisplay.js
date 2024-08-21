@@ -153,7 +153,6 @@ const BookDisplay = ({
 								</Text>
 								<Icon
 									name="more-horizontal"
-                  
 									style={{
 										color: "#FEFAE0",
 										fontSize: 24,
