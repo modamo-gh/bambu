@@ -10,6 +10,7 @@ import {
 } from "react-native";
 import { scrapeBookData, scrapeSearchResults } from "../services/dataFetcher";
 import ActionButton from "./ActionButton";
+import Book from "../models/Book.js"
 
 const Search = ({
 	books,
@@ -23,15 +24,17 @@ const Search = ({
 
 	const addBook = async (url) => {
 		setSearchResults([]);
-		const date = new Date();
+
+		const book = new Book();
+		
 		setIsLoading(true);
-		let book = await scrapeBookData(url);
+		book = await scrapeBookData(url);
 		setIsLoading(false);
-		book.dateAdded = date.getTime();
-		book.averageRating = (
-			(book.amazonRating + book.goodreadsRating) /
-			2
-		).toFixed(3);
+
+		const date = new Date();
+		book.setDateAdded(date.getTime());
+
+		book.calculateAverageRating();
 		book.timeToReadInMinutes = (book.numberOfPages * 275) / 250;
 
 		let updatedBooks = [...books, book];
