@@ -1,5 +1,6 @@
 import axios from "axios";
 import * as cheerio from "cheerio";
+import Book from "../models/Book"
 
 export const scrapeSearchResults = async (searchTerm) => {
   const baseURL = "https://www.goodreads.com";
@@ -26,7 +27,7 @@ export const scrapeSearchResults = async (searchTerm) => {
   }
 };
 
-export const scrapeBookData = async (url) => {
+export const scrapeBookData = async (url, book) => {
   try {
     const response = await axios.get(url);
     const html = response.data;
@@ -44,15 +45,18 @@ export const scrapeBookData = async (url) => {
         book_$("[type='application/ld+json']").text(),
       );
 
-      const title = bookJSON.name;
-      const imageURL = bookJSON.image;
-      const numberOfPages = bookJSON.numberOfPages;
-      const goodreadsRating = bookJSON.aggregateRating.ratingValue;
-      const author = bookJSON.author[0].name;
+      const date = new Date();
+		  const book = new Book(date.getTime());
+
+      book.setTitle(bookJSON.name);
+      book.setImageURL(bookJSON.image);
+      book.setNumberOfPages(bookJSON.numberOfPages);
+      book.setGoodreadsRating(bookJSON.aggregateRating.ratingValue);
+      book.setAuthor(bookJSON.author[0].name);
 
       try {
-        const symbollessTitle = title.replace(/[^a-zA-Z0-9\s]/g, "+");
-        const searchTerm = `${symbollessTitle} ${author} hardcover`.replace(
+        const symbollessTitle = book.getTitle().replace(/[^a-zA-Z0-9\s]/g, "+");
+        const searchTerm = `${symbollessTitle} ${book.getAuthor()} hardcover`.replace(
           /\s+/g,
           "+",
         );
@@ -74,21 +78,16 @@ export const scrapeBookData = async (url) => {
             `https://www.amazon.com${amazonResult}`,
           );
           const amazonBookHTML = amazonBookResponse.data;
-
           const amazonBook_$ = cheerio.load(amazonBookHTML);
+
           const amazonRating = parseFloat(
             amazonBook_$("[data-hook='rating-out-of-text']")
               .text()
               .split(" ")[0],
           );
+          book.setAmazonRating(amazonRating);
 
-          return {
-            amazonRating,
-            goodreadsRating,
-            imageURL,
-            numberOfPages,
-            title,
-          };
+          return book;
         } catch (error) {
           console.error("Error scraping Amazon book data:", error);
         }
